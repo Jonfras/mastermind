@@ -43,8 +43,6 @@ public class Mastermind {
             int i;
             Scanner s = new Scanner(getInputStreamForAsset(filename));
             for (i = 0; s.hasNext(); i++) {
-                if (i == 4)
-                    System.out.println("hello World");
                 String line = s.nextLine().trim();
                 System.out.println(line.length());
                 String[] parts = line.split(" ");
@@ -142,5 +140,21 @@ public class Mastermind {
         String message = "!!" + System.currentTimeMillis() + " " + field + " was not entered correctly...";
         System.out.println(message);
         log.add(message);
+    }
+
+    public List<Character> createCode(){
+        int max = alphabet.size();
+        ArrayList<Character> code = new ArrayList<>();
+        for (int i = 0; i < max; i++) {
+            int idx = (int) (Math.random() * max);
+            if (doubleAllowed){
+                code.add(alphabet.get(idx).charAt(0));
+            }
+            else{
+                if (!code.contains(alphabet.get(idx)))
+                    code.add(alphabet.get(idx).charAt(0));
+            }
+        }
+        return code;
     }
 }
