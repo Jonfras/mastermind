@@ -1,6 +1,6 @@
-alphabet = A, B, C, D, E, F
+alphabet = 1, 2, 3, 4, 5, 6
 codeLength = 4
-doubleAllowed = true
+doubleAllowed = false
 guessRounds =            12
 correctPositionSign =+
 correctCodeElementSign =-

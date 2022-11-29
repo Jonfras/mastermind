@@ -29,6 +29,8 @@ public class Mastermind {
     private AssetManager assetManager;
     private final String filename;
 
+    private final String MESSAGE_SEPARATOR = " ";
+
     Predicate<String> notNull = s -> !Objects.equals(s, "");
 
     public Mastermind(AssetManager assetManager, String filename) {
@@ -45,7 +47,7 @@ public class Mastermind {
             for (i = 0; s.hasNext(); i++) {
                 String line = s.nextLine().trim();
                 System.out.println(line.length());
-                String[] parts = line.split(" ");
+                String[] parts = line.split(MESSAGE_SEPARATOR);
 
                 //remove all Null parts
                 List<String> tempList = Arrays.stream(parts).collect(Collectors.toList());
@@ -64,7 +66,7 @@ public class Mastermind {
                         try {
                             alphabet = Arrays.stream(parts)
                                     .skip(2)
-                                    .map(n -> n.replace(",", " "))
+                                    .map(n -> n.replace(",", MESSAGE_SEPARATOR))
                                     .collect(Collectors.toList());
                         } catch (Exception e) {
                             logReadingError("Alphabet");
