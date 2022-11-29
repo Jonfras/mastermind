@@ -143,10 +143,9 @@ public class Mastermind {
     }
 
     public List<Character> createCode(){
-        int max = alphabet.size();
         ArrayList<Character> code = new ArrayList<>();
-        for (int i = 0; i < max; i++) {
-            int idx = (int) (Math.random() * max);
+        for (int i = 0; i < codeLength; i++) {
+            int idx = (int) (Math.random() * alphabet.size());
             if (doubleAllowed){
                 code.add(alphabet.get(idx).charAt(0));
             }
@@ -156,5 +155,25 @@ public class Mastermind {
             }
         }
         return code;
+    }
+
+    public List<String> getAlphabet(){
+        return alphabet;
+    }
+
+    public int getCodeLength() {
+        return codeLength;
+    }
+
+    public boolean isDoubleAllowed() {
+        return doubleAllowed;
+    }
+
+    public char getCorrectPositionSign() {
+        return correctPositionSign.charAt(0);
+    }
+
+    public char getCorrectCodeElementSign() {
+        return correctCodeElementSign.charAt(0);
     }
 }

@@ -31,7 +31,7 @@
             android:id="@+id/btnSettings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
+            android:layout_margin="1dp"
             android:layout_weight="1"
             android:text="SHOW SETTINGS"
             android:textSize="10sp" />
@@ -64,7 +64,7 @@
 
         <Button
             android:id="@+id/btnSubmit"
-            android:layout_width="wrap_content"
+            android:layout_width="1dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onSubmitClicked"
