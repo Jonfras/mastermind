@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
@@ -58,8 +59,11 @@ public class MainActivity extends AppCompatActivity {
         code.forEach(System.out::println);
 
         findViewById(R.id.btnSubmit).setOnClickListener(view -> {
-            onSubmitListener();
-            txtView.setText("");
+            if (counter < MAX_ROUNDS) {
+                onSubmitClicked();
+            } else {
+                Toast.makeText(getApplicationContext(), "Start a new Game via the SHOW SETTINGS button", Toast.LENGTH_SHORT).show();
+            }
         });
 
 
@@ -70,39 +74,62 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btnSettings).setOnClickListener(view -> {
             onSettingsClicked();
         });
+
+        /**
+         * SaveClickListener
+         * Saves the game State if it is not empty or finished.
+         */
+        findViewById(R.id.btnSave).setOnClickListener(view -> {
+            if (counter <= 0 || counter >= 12) {
+                Toast.makeText(getApplicationContext(), "Wasn't able to Save! \nGame is either empty or lost", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                //moch des
+            }
+        });
+
+        /**
+         * LoadClickListener
+         * Loads a previous game state that has been saved.
+         */
+        findViewById(R.id.btnLoad).setOnClickListener(view -> {
+            onLoadClicked();
+        });
     }
 
-    private void onSubmitListener() {
+
+    private void onSubmitClicked() {
         mAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, guessList);
         board.setAdapter(mAdapter);
         if (isValidGuess(txtView.getText().toString())) {
             counter++;
 
-            String rating = onSubmitClicked(txtView.getText().toString());
+            String rating = getRating(txtView.getText().toString());
             guessList.add(txtView.getText() + " | " + rating);
             mAdapter.notifyDataSetChanged();
             System.out.println("--------------------");
             System.out.println("RESPONSE:");
             System.out.println(rating);
             if (rating.equals("++++")) {
-                Toast.makeText(getApplicationContext(), "You won!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "You won!", Toast.LENGTH_SHORT).show();
             } else {
-                if (MAX_ROUNDS - counter == 0) {
-                    Toast.makeText(getApplicationContext(), "You lost!", Toast.LENGTH_LONG).show();
+                if (counter == MAX_ROUNDS) {
+                    AtomicReference<String> temp = new AtomicReference<>("");
+                    code.forEach(s -> temp.updateAndGet(v -> v + s));
+                    Toast.makeText(getApplicationContext(), "You lost!\nThe Code was: " + temp, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "You have " + (MAX_ROUNDS - counter) + " rounds left", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "You have " + (MAX_ROUNDS - counter) + " rounds left", Toast.LENGTH_SHORT).show();
                 }
             }
             System.out.println("--------------------");
         } else {
-            Toast.makeText(getApplicationContext(), "Invalid Guess!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Invalid Guess!", Toast.LENGTH_SHORT).show();
             System.err.println("INVALID GUESS");
         }
     }
 
 
-
-    private String onSubmitClicked(String text) {
+    private String getRating(String text) {
         StringBuilder rating = new StringBuilder();
         char tempHint;
 
@@ -152,15 +179,26 @@ public class MainActivity extends AppCompatActivity {
                     board.setAdapter(mAdapter);
                     submit.setClickable(true);
                     txtView.setClickable(true);
+                    counter = 0;
+                    code = mastermind.createCode();
+                    System.out.println("CODE:");
+                    for (char x : code) {
+                        System.out.println(x);
+                    }
                 }
             }
         });
+    }
 
+    private void onSaveClicked() {
+    }
+
+    private void onLoadClicked() {
     }
 
 
     private boolean isValidGuess(String text) {
-        //habe sie in Chars konvertiert da es mit Strings nicht funktioniert hat...
+
         List<Character> alphabet = mastermind.getAlphabet().stream()
                 .map(string -> string.charAt(0))
                 .collect(Collectors.toList());
@@ -168,14 +206,11 @@ public class MainActivity extends AppCompatActivity {
         char[] chars = text.toCharArray();
         List<Character> guess = convertArrayToList(chars);
 
-        //Arrays.stream(text.split(MESSAGE_SEPARATOR))
-        //                .map(string -> string.charAt(0))
-        //                .collect(Collectors.toList());
         if (guess.size() != 4) {
             return false;
         }
         for (char element : guess) {
-            if (!alphabet.contains(element)) {      //alphabet.contains(element) verstehe nicht warum der Vergleich mit Strings nicht funktioniert
+            if (!alphabet.contains(element)) {
                 return false;
             }
             if (!mastermind.isDoubleAllowed() && guess.indexOf(element) != guess.lastIndexOf(element)) {
