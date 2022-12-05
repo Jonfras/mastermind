@@ -144,14 +144,13 @@ public class Mastermind {
         log.add(message);
     }
 
-    public List<Character> createCode(){
+    public List<Character> createCode() {
         ArrayList<Character> code = new ArrayList<>();
         for (int i = 0; i < codeLength; i++) {
             int idx = (int) (Math.random() * alphabet.size());
-            if (doubleAllowed){
+            if (doubleAllowed) {
                 code.add(alphabet.get(idx).charAt(0));
-            }
-            else{
+            } else {
                 if (!code.contains(alphabet.get(idx).charAt(0)))
                     code.add(alphabet.get(idx).charAt(0));
                 else i--;
@@ -160,7 +159,7 @@ public class Mastermind {
         return code;
     }
 
-    public List<String> getAlphabet(){
+    public List<String> getAlphabet() {
         return alphabet;
     }
 
@@ -182,5 +181,24 @@ public class Mastermind {
 
     public int getGuessRounds() {
         return guessRounds;
+    }
+
+    public List<String> getSettings() {
+        List<String> settings = new ArrayList<>();
+
+        settings.add("codeLength");
+        settings.add(String.valueOf(codeLength));
+
+        settings.add("doubleAllowed");
+        settings.add(String.valueOf(doubleAllowed));
+
+        settings.add("correctPositionSign");
+        settings.add(correctPositionSign);
+
+        settings.add("correctCodeElementSign");
+        settings.add(correctCodeElementSign);
+
+        return settings;
+
     }
 }
