@@ -152,8 +152,9 @@ public class Mastermind {
                 code.add(alphabet.get(idx).charAt(0));
             }
             else{
-                if (!code.contains(alphabet.get(idx)))
+                if (!code.contains(alphabet.get(idx).charAt(0)))
                     code.add(alphabet.get(idx).charAt(0));
+                else i--;
             }
         }
         return code;
@@ -177,5 +178,9 @@ public class Mastermind {
 
     public char getCorrectCodeElementSign() {
         return correctCodeElementSign.charAt(0);
+    }
+
+    public int getGuessRounds() {
+        return guessRounds;
     }
 }
