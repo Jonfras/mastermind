@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Wasn't able to Save! \nGame is either empty or lost", Toast.LENGTH_SHORT).show();
             }
             else{
-                //moch des
+
             }
         });
 
@@ -191,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onSaveClicked() {
+
     }
 
     private void onLoadClicked() {
