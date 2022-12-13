@@ -11,6 +11,5 @@ public class SaveState {
         this.guessList = guessList;
     }
 
-    public //irgenda xml file oda so
 
 }
